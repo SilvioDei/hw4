@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs: App Check</title>
+<style>
+  :root { --paper: #f5eedc; --card: #fbf7ec; --ink: #0e2a47; --muted: #5b4e3c; --brick: #9e3b2c; --brass: #a8842f; --green: #2f6b3f; --line: #d6c7a4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+  header { background: var(--ink); color: var(--paper); padding: 2rem 1.5rem 1.6rem; border-bottom: 4px double var(--brass); }
+  header h1 { margin: 0 0 0.3rem; font: 700 2.1rem/1.15 Georgia, "Times New Roman", serif; }
+  header p { margin: 0; color: #d9ceb3; }
+  main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+  nav.toc { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin-bottom: 2rem; }
+  nav.toc ol { margin: 0.3rem 0 0; }
+  a { color: #00356b; }
+  section { margin-bottom: 3rem; }
+  h2 { font: 700 1.6rem/1.2 Georgia, serif; border-bottom: 1px solid var(--brass); padding-bottom: 0.4rem; margin: 0 0 0.8rem; }
+  h3 { font: 700 1.15rem/1.3 Georgia, serif; margin: 1.6rem 0 0.5rem; }
+  .pass { display: inline-block; font: 700 0.8rem/1 "Courier New", monospace; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); border: 2px solid var(--green); border-radius: 3px; padding: 0.25rem 0.5rem; vertical-align: middle; margin-left: 0.5rem; }
+  figure { margin: 0.6rem 0 0; background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 0.6rem; }
+  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+  figcaption { padding: 0.7rem 0.3rem 0.2rem; }
+  table { border-collapse: collapse; margin: 0.6rem 0; background: var(--card); font-size: 0.95rem; }
+  th, td { border: 1px solid var(--line); padding: 0.35rem 0.7rem; text-align: center; }
+  th { background: #eadfc4; }
+  td.out { color: var(--brick); font-weight: 700; }
+  code { font-family: "Courier New", monospace; background: #eadfc4; padding: 0 0.25rem; border-radius: 2px; }
+  .note { color: var(--muted); font-size: 0.92rem; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 800px) { .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Campus Customs: App Check</h1>
+  <p>Screenshots of the running site (React + Vite frontend on <code>localhost:5173</code>, FastAPI + PydanticAI backend on <code>localhost:8000</code>), taken with Playwright (Chromium, 1366×900) on 30 Sep 2026.</p>
+</header>
+<main>
+  <nav class="toc">
+    <strong>Checks</strong>
+    <ol>
+      <li><a href="#inventory">Chat checks inventory: honest stock and price from the database</a></li>
+      <li><a href="#search">Dynamic search-result cards after a category question</a></li>
+      <li><a href="#usability">Usability feature (Problem 9, B1): "Similar items in your size"</a></li>
+    </ol>
+    <p class="note">All chats were run as a guest, so no chat history was saved. The screenshots show only the website: no terminal, editor, <code>.env</code> file, or API key.</p>
+  </nav>
+
+  <section id="inventory">
+    <h2>1. Chat checks the inventory level of an item <span class="pass">Pass</span></h2>
+    <p>The item is the <strong>Boola Boola T Shirt</strong>, which is <strong>sold out in L</strong>. For reference, here is what the database (<code>catalogue</code> and <code>inventory</code> tables) says at test time:</p>
+    <table>
+      <tr><th>Price</th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr>
+      <tr><td>$32.00</td><td>12</td><td>12</td><td>15</td><td class="out">0</td><td>2</td><td>20</td></tr>
+    </table>
+
+    <h3>1a. The chat's answer</h3>
+    <figure>
+      <img src="app_check_images/inventory_chat.png" alt="Chat panel: the Clerk answers the Boola Boola T-shirt is $32.00 with stock XS 12, S 12, M 15, L sold out, XL only 2 left, XXL 20">
+      <figcaption>Asked for stock and price, the Clerk replied "<strong>$32.00</strong>… XS: 12, S: 12, M: 15, <strong>L: sold out</strong>, XL: only 2 left, XXL: 20", which matches the database table exactly. The green "✓ Checked against inventory" stamp shows the backend verified these numbers.</figcaption>
+    </figure>
+
+    <h3>1b. The same item's product page, for comparison</h3>
+    <figure>
+      <img src="app_check_images/inventory_product_page.png" alt="Boola Boola T Shirt product page: $32.00, XS 12, S 12, M 15, L out of stock, XL 2, XXL 20">
+      <figcaption>The product page shows the same <strong>$32.00</strong> and the same stock per size, with <strong>L OUT OF STOCK</strong>. This proves the chat quoted the database honestly instead of guessing.</figcaption>
+    </figure>
+  </section>
+
+  <section id="search">
+    <h2>2. Dynamic search-result cards after a category question <span class="pass">Pass</span></h2>
+    <figure>
+      <img src="app_check_images/search_cards.png" alt="Home page with a 'Staff picks from the Clerk' shelf showing hoodie cards, and the chat reply about 27 hoodies">
+      <figcaption>Asking <em>"what hoodies do you have?"</em> made a shelf of 12 hoodie cards (12 of 27 matches) appear at the top of the page. The agent only chose the search; each card's name, price, and image come from the database.</figcaption>
+    </figure>
+
+    <h3>2b. A search card opens the single-item page</h3>
+    <figure>
+      <img src="app_check_images/search_card_click.png" alt="Basic Hoodie Big Yale product page opened from a search card; the shelf of results is still visible at the top">
+      <figcaption>Clicking the first search card opened the <strong>Basic Hoodie Big Yale</strong> product page, with a large image, price, and stock per size. This proves the chat's cards link to the single-item page.</figcaption>
+    </figure>
+  </section>
+
+  <section id="usability">
+    <h2>3. Usability feature: "Similar items in your size" (Problem 9, B1) <span class="pass">Pass</span></h2>
+    <figure>
+      <img src="app_check_images/usability_alternatives.png" alt="On the Boola Boola page, the Clerk suggests similar T-shirts in size L, and a shelf of 6 in-stock alternatives appears">
+      <figcaption>On the Boola Boola page (sold out in L), asking for a large made the agent call <code>find_alternatives</code>, which put six similar T-shirts on the shelf. The table below confirms each suggestion is really in stock in L.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Suggested item</th><th>L in stock (database)</th></tr>
+      <tr><td>District Tri Blend T Shirt Vintage Shield</td><td>8</td></tr>
+      <tr><td>Football Left Chest T Shirt</td><td>2</td></tr>
+      <tr><td>School Of Management Crest T Shirt</td><td>2</td></tr>
+      <tr><td>School Of Nursing Crest T Shirt</td><td>15</td></tr>
+      <tr><td>Track Field Left Chest T Shirt</td><td>25</td></tr>
+      <tr><td>Grace Hopper Logo T Shirt</td><td>8</td></tr>
+    </table>
+  </section>
+</main>
+</body>
+</html>

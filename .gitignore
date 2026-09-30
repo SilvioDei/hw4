@@ -1,0 +1,33 @@
+# Secrets: real keys stay local (.env.example is committed)
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local-only data pack (never in the public repo)
+data/
+data.zip
+*.db
+*.db-journal
+*.backup.db
+
+# Audit trail temp/quarantine files (audit_trail.json itself IS committed)
+output/*.tmp
+output/*.corrupt-*.json
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Local tool config
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

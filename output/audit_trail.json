@@ -1,0 +1,77 @@
+[
+  {
+    "time": "2026-09-30T05:11:56+00:00",
+    "user": "guest",
+    "page_product": null,
+    "model": "gpt-5.6-luna",
+    "steps": [
+      {
+        "tool": "search_products",
+        "args": {
+          "query": "Champion Full Zip Hood"
+        },
+        "result": "47 matches"
+      },
+      {
+        "tool": "get_product_details",
+        "args": {
+          "product_id": "champion-full-zip-hood"
+        },
+        "result": "champion-full-zip-hood $88.00; sold out none"
+      }
+    ],
+    "model_requests": 3,
+    "tool_calls": 2,
+    "tokens": 10887,
+    "fact_check": "verified",
+    "stop_reason": "answered",
+    "duration_ms": 8613
+  },
+  {
+    "time": "2026-09-30T05:12:02+00:00",
+    "user": "guest",
+    "page_product": "boola-boola-t-shirt",
+    "model": "gpt-5.6-luna",
+    "steps": [],
+    "model_requests": 0,
+    "tool_calls": 0,
+    "tokens": 0,
+    "fact_check": null,
+    "stop_reason": "blocked_by_content_filter",
+    "duration_ms": 3711
+  },
+  {
+    "time": "2026-09-30T05:12:08+00:00",
+    "user": "logged-in user",
+    "page_product": null,
+    "model": "gpt-5.6-luna",
+    "steps": [],
+    "model_requests": 1,
+    "tool_calls": 0,
+    "tokens": 3468,
+    "fact_check": "no_facts",
+    "stop_reason": "answered",
+    "duration_ms": 2003
+  },
+  {
+    "time": "2026-09-30T05:12:26+00:00",
+    "user": "guest",
+    "page_product": null,
+    "model": "gpt-5.6-luna",
+    "steps": [
+      {
+        "tool": "search_products",
+        "args": {
+          "query": "Boola Boola T Shirt"
+        },
+        "result": "102 matches"
+      }
+    ],
+    "model_requests": 2,
+    "tool_calls": 1,
+    "tokens": 6961,
+    "fact_check": "verified",
+    "stop_reason": "answered",
+    "duration_ms": 4466
+  }
+]
